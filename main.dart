@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,7 +24,8 @@ class Food {
   String foodName;
   String foodPosition;
   DateTime foodExpireDate;
-  
+  final DateTime currentDate = DateTime.now();
+
   Food(String foodName, String foodPosition, DateTime foodExpireDate) {
     this.foodName = foodName;
     this.foodPosition = foodPosition;
@@ -33,11 +35,11 @@ class Food {
   String get name {
     return foodName;
   }
-  
+
   String get position {
     return foodPosition;
   }
-    
+
   DateTime get expireDate {
     return foodExpireDate;
   }
@@ -45,30 +47,44 @@ class Food {
   void set name(String foodName) {
     name = foodName;
   }
-  
+
   void set position(String foodPosition) {
     position = foodPosition;
   }
-  
+
   void set expireDate(DateTime foodExpireDate) {
     expireDate = foodExpireDate;
   }
-  
+
   bool isNearExpire(DateTime foodExpireDate) {
-    
-  }
-  
-  bool isExpired(DateTime foodExpireDate) {
-    
+    return true;
   }
 
+  bool isExpired(DateTime foodExpireDate) {
+    return true;
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   final foods = <Food>[];
   final foodName = TextEditingController();
   final foodPosition = TextEditingController();
-  final foodExpireDate = TextEditingController();
+  //final foodExpireDate = TextEditingController();
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<Null> _selectedDate(BuildContext context) async {
+    final DateTime selected = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2020, 1),
+        lastDate: DateTime(2030, 12));
+    if (selected != null && selected != selectedDate)
+      setState(() {
+        selectedDate = selected;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +94,23 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
-          children: [
+          children: <Widget>[
+            Text(
+              "${selectedDate.toLocal()}".split(' ')[0],
+              style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            RaisedButton(
+              onPressed: () => _selectedDate(context),
+              child: Text(
+                'Select date',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              color: Colors.greenAccent,
+            ),
             TextField(
               controller: foodName,
               decoration: InputDecoration(
@@ -91,13 +123,6 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter position of food in the fridge',
-              ),
-            ),
-            TextField(
-              controller: foodExpireDate,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter expiring date of food',
               ),
             ),
             for (var food in foods)
@@ -113,21 +138,23 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (foodName.text.isEmpty || 
-             foodPosition.text.isEmpty ||
-             foodExpireDate.text.isEmpty) {
+          if (foodName.text.isEmpty ||
+              foodPosition.text.isEmpty) {
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Please enter some text 🥺'),
+                  title: Text('Please enter full detail of the food 🥺'),
                 );
               },
             );
           } else {
             setState(() {
-              foods.add(food(foodName.text, foodPosition.text, foodExpireDate.text));
+              foods.add(
+                  Food(foodName.text, foodPosition.text, selectedDate.toLocal()));
               foodName.clear();
+              foodPosition.clear();
+              selectedDate = DateTime.now();
             });
           }
         },
