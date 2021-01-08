@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:over_rotten/status.dart';
 
 import 'foodScreen.dart';
 import 'main.dart';
@@ -20,7 +19,8 @@ class _ListScreenState extends State<ListScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              showSearch(context: context, delegate: SearchFood(foods)).then(onGoBack);
+              showSearch(context: context, delegate: SearchFood(foods))
+                  .then(onGoBack);
             },
             icon: Icon(Icons.search),
           ),
@@ -31,8 +31,12 @@ class _ListScreenState extends State<ListScreen> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(foods[index].foodName),
-            trailing: Text(foods[index].getStatus().toString().split(".")[1]),
-            hoverColor: Colors.blue[50],
+            trailing: Text(foods[index].getStatus().toString().split(".")[1],
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: displayColor(foods[index].getStatus()),
+                )),
+            hoverColor: Colors.blue[100],
             onTap: () {
               Navigator.push(
                 context,
@@ -48,6 +52,36 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   onGoBack(dynamic value) {
-    setState(() {});
+    setState(() {
+      foods.sort(
+          (a, b) => a.getDaysUntilExpire().compareTo(b.getDaysUntilExpire()));
+    });
+  }
+
+  Color displayColor(Status expireState) {
+    Color colorState;
+    switch (expireState) {
+      case Status.EXPIRED:
+        {
+          colorState = Colors.red;
+        }
+        break;
+      case Status.EXPIRING:
+        {
+          colorState = Colors.orange;
+        }
+        break;
+      case Status.FRESH:
+        {
+          colorState = Colors.green;
+        }
+        break;
+      default:
+        {
+          colorState = Colors.grey;
+        }
+        break;
+    }
+    return colorState;
   }
 }

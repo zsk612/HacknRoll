@@ -9,7 +9,8 @@ class Food {
   DateTime foodExpireDate;
   final DateTime currentDate = DateTime.now();
 
-  Food(String foodName, double foodNumber, String foodPosition, DateTime foodExpireDate) {
+  Food(String foodName, double foodNumber, String foodPosition,
+      DateTime foodExpireDate) {
     this.foodName = foodName;
     this.foodNumber = foodNumber;
     this.foodPosition = foodPosition;
@@ -48,34 +49,31 @@ class Food {
     expireDate = foodExpireDate;
   }
 
-  bool isNearExpire(DateTime foodExpireDate) {
-    return true;
-  }
-
-  bool isExpired(DateTime foodExpireDate) {
-    return true;
+  int getDaysUntilExpire() {
+    final diffDt = foodExpireDate.difference(currentDate);
+    return diffDt.inDays;
   }
 
   Status getStatus() {
     final diffDt = foodExpireDate.difference(currentDate);
     if (diffDt.inDays >= 3) {
-      return Status.fresh;
+      return Status.FRESH;
     } else if (diffDt.inDays < 0) {
-      return Status.expired;
+      return Status.EXPIRED;
     } else {
-      return Status.expiring;
+      return Status.EXPIRING;
     }
   }
 
-  Food.fromMap(Map map){
+  Food.fromMap(Map map) {
     this.foodName = map['name'];
     this.foodNumber = map['number'];
     this.foodPosition = map['position'];
     this.foodExpireDate = DateTime.parse(map['expireDate']);
   }
 
-  Map toMap(){
-    return{
+  Map toMap() {
+    return {
       'name': this.foodName,
       'number': this.foodNumber,
       'position': this.foodPosition,
@@ -83,10 +81,8 @@ class Food {
     };
   }
 
-  String formatDate(DateTime unformattedDate){
+  String formatDate(DateTime unformattedDate) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(unformattedDate);
     return formattedDate;
   }
-
-
 }

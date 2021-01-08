@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 import 'food.dart';
@@ -44,7 +41,7 @@ class SearchFood extends SearchDelegate {
       suggestionList = [];
     } else {
       suggestionList.addAll(foods.where(
-            (element) => element.foodName.contains(query),
+        (element) => element.foodName.contains(query),
       ));
     }
 
@@ -52,7 +49,7 @@ class SearchFood extends SearchDelegate {
       itemCount: suggestionList.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title:Text(
+          title: Text(
             suggestionList[index].foodName.toString(),
           ),
           onTap: () {

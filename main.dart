@@ -16,22 +16,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.indigo),
+      theme:
+          ThemeData(primarySwatch: Colors.indigo, hintColor: Colors.grey[400]),
       home: MyHomePage(),
     );
   }
 }
 
-
 class MyHomePage extends StatefulWidget {
   @override
   MyHomePageState createState() => MyHomePageState();
-
 }
 
 class MyHomePageState extends State<MyHomePage> {
-
- static SharedPreferences sharedPreferences;
+  static SharedPreferences sharedPreferences;
 
   final foodName = TextEditingController();
   final foodPosition = TextEditingController();
@@ -41,7 +39,7 @@ class MyHomePageState extends State<MyHomePage> {
   DateTime selectedDate = DateTime.now();
 
   @override
-  void initState(){
+  void initState() {
     initSharePreferences();
 
     super.initState();
@@ -52,19 +50,21 @@ class MyHomePageState extends State<MyHomePage> {
     loadData();
   }
 
-  static void saveData(){
-    List<String> spList = foods.map((food)=>json.encode(food.toMap())).toList();
+  static void saveData() {
+    List<String> spList =
+        foods.map((food) => json.encode(food.toMap())).toList();
     sharedPreferences.setStringList('list', spList);
     //print(spList);
   }
 
-  void loadData(){
+  void loadData() {
     List<String> spList = sharedPreferences.getStringList('list');
     var tempFoodList = <Food>[];
-    tempFoodList = spList.map((food) =>Food.fromMap(json.decode(food))).toList();
+    tempFoodList =
+        spList.map((food) => Food.fromMap(json.decode(food))).toList();
 
     //pass stored data to final list foods
-    for(var foodData in tempFoodList ){
+    for (var foodData in tempFoodList) {
       foods.add(foodData);
     }
 
@@ -102,27 +102,11 @@ class MyHomePageState extends State<MyHomePage> {
 //               ),
 //             ),
             Positioned(
-              bottom: 60.0,
+              top: 20.0,
               left: 10.0,
               right: 10.0,
               child: Column(
                 children: <Widget>[
-                  Text(
-                    "${selectedDate.toLocal()}".split(' ')[0],
-                    style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  RaisedButton(
-                    onPressed: () => _selectedDate(context),
-                    child: Text(
-                      'Select date',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                    color: Colors.greenAccent,
-                  ),
                   TextField(
                     controller: foodName,
                     decoration: InputDecoration(
@@ -130,13 +114,22 @@ class MyHomePageState extends State<MyHomePage> {
                       hintText: 'Enter food name',
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   TextField(
                     controller: foodNumber,
-                    decoration: new InputDecoration(labelText: "Enter your number"),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter food number',
+                    ),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly
                     ], // Only numbers can be entered
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   TextField(
                     controller: foodPosition,
@@ -145,21 +138,34 @@ class MyHomePageState extends State<MyHomePage> {
                       hintText: 'Enter position of food in the fridge',
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: ElevatedButton(
-                        child: Text('List'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ListScreen()),
-                          );
-                        }),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "${selectedDate.toLocal()}".split(' ')[0],
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  RaisedButton(
+                    onPressed: () => _selectedDate(context),
+                    child: Text(
+                      'Select date',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    color: Colors.indigo,
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: FloatingActionButton(
+                    child: FlatButton(
+                      color: Colors.white,
+                      textColor: Colors.indigo,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.indigo)),
+                      child: Text('Add'),
                       onPressed: () {
                         if (foodName.text.isEmpty ||
                             foodPosition.text.isEmpty ||
@@ -175,7 +181,10 @@ class MyHomePageState extends State<MyHomePage> {
                           );
                         } else {
                           setState(() {
-                            foods.add(Food(foodName.text, double.parse(foodNumber.text), foodPosition.text,
+                            foods.add(Food(
+                                foodName.text,
+                                double.parse(foodNumber.text),
+                                foodPosition.text,
                                 selectedDate.toLocal()));
                             foodName.clear();
                             foodNumber.clear();
@@ -185,8 +194,27 @@ class MyHomePageState extends State<MyHomePage> {
                           });
                         }
                       },
-                      child: Icon(Icons.add),
                     ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: FlatButton(
+                        color: Colors.indigo,
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.indigo)),
+                        child: Text('List'),
+                        onPressed: () {
+                          foods.sort((a, b) => a
+                              .getDaysUntilExpire()
+                              .compareTo(b.getDaysUntilExpire()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ListScreen()),
+                          );
+                        }),
                   ),
                 ],
               ),
@@ -197,5 +225,3 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-

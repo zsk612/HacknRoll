@@ -1,5 +1,5 @@
-enum Status { 
-   fresh, 
-   expiring, // 3 days before expired
-   expired
-}  
+enum Status {
+  FRESH,
+  EXPIRING, // 3 days before expired
+  EXPIRED
+}

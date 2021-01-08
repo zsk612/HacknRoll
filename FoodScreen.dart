@@ -18,7 +18,6 @@ class _FoodScreenState extends State<FoodScreen> {
   _FoodScreenState(this.food);
   final foodNumber = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     // Use the Todo to create the UI.
@@ -35,16 +34,20 @@ class _FoodScreenState extends State<FoodScreen> {
               trailing: Text(food.foodName),
             ),
             ListTile(
-              leading: Text("Food Number:"),
-              trailing: Text(food.foodNumber.toString()),
-            ),
-            ListTile(
               leading: Text("Food Position:"),
               trailing: Text(food.foodPosition),
             ),
             ListTile(
               leading: Text("Food Status:"),
               trailing: Text(food.getStatus().toString().split(".")[1]),
+            ),
+            ListTile(
+              leading: Text("Expiring Date:"),
+              trailing: Text("${food.expireDate.toLocal()}".split(' ')[0]),
+            ),
+            ListTile(
+              leading: Text("Food Number:"),
+              trailing: Text(food.foodNumber.toString()),
             ),
             TextField(
               controller: foodNumber,
@@ -53,10 +56,6 @@ class _FoodScreenState extends State<FoodScreen> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly
               ], // Only numbers can be entered
-            ),
-            ListTile(
-              leading: Text("Expiring Date:"),
-              trailing: Text("${food.expireDate.toLocal()}".split(' ')[0]),
             ),
             RaisedButton(
               onPressed: () {
@@ -68,10 +67,10 @@ class _FoodScreenState extends State<FoodScreen> {
               },
               child: Text(
                 'Save changes',
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-              color: Colors.greenAccent,
+              color: Colors.green,
             ),
             RaisedButton(
               onPressed: () {
@@ -83,13 +82,11 @@ class _FoodScreenState extends State<FoodScreen> {
               },
               child: Text(
                 'Delete',
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-              color: Colors.greenAccent,
+              color: Colors.redAccent,
             ),
-
-
           ],
         ),
       ),
