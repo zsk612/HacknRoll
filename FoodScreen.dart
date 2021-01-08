@@ -1,10 +1,17 @@
-class FoodScreen extends StatelessWidget {
-  // Declare a field that holds the Todo.
+class FoodScreen extends StatefulWidget {
   final Food food;
-
-  // In the constructor, require a Todo.
+  @override
+  _FoodScreenState createState() => _FoodScreenState(food);
+  // In the constructor, require a food.
   FoodScreen({Key key, @required this.food}) : super(key: key);
+}
 
+class _FoodScreenState extends State<FoodScreen> {
+  Food food;
+  _FoodScreenState(this.food);
+  final foodNumber = TextEditingController();
+
+  
   @override
   Widget build(BuildContext context) {
     // Use the Todo to create the UI.
@@ -28,13 +35,49 @@ class FoodScreen extends StatelessWidget {
                 leading: Text("Food Position:"),
                 trailing: Text(food.foodPosition),
             ),
+            TextField(
+                    controller: foodNumber,
+                    decoration: new InputDecoration(labelText: "Edit amount of Food"),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ], // Only numbers can be entered
+             ),
             ListTile(
                 leading: Text("Expiring Date:"),
                 trailing: Text("${food.expireDate.toLocal()}".split(' ')[0]),
             ),
+            RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        food.foodNumber = double.parse(foodNumber.text);
+                        foodNumber.clear();
+                      });
+                    },
+                    child: Text(
+                      'Save changes',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    color: Colors.greenAccent,
+            ),
+            RaisedButton(
+                    onPressed: () {
+                      print("item deleted");
+                    },
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    color: Colors.greenAccent,
+            ),
+            
+            
           ],
         ),
       ),
     );
   }
 }
+
