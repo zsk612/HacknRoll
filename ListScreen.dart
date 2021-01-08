@@ -9,6 +9,14 @@ class _ListScreenState extends State<ListScreen> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("List Food"),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              showSearch(context: context, delegate: SearchFood(foods));
+            },
+            icon: Icon(Icons.search),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: foods.length,
@@ -16,7 +24,7 @@ class _ListScreenState extends State<ListScreen> {
           return ListTile(
             title: Text(foods[index].foodName),
             trailing: Text(foods[index].getStatus().toString().split(".")[1]),
-            hoverColor:Colors.blue[50],
+            hoverColor: Colors.blue[50],
             onTap: () {
               Navigator.push(
                 context,
@@ -28,21 +36,6 @@ class _ListScreenState extends State<ListScreen> {
           );
         },
       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(18.0),
-//         child: Column(
-//           children: <Widget>[
-//             for (var food in foods)
-//               ListTile(
-//                 leading: Text(food.name),
-//                 trailing: OutlinedButton(
-//                   onPressed: () => setState(() => foods.remove(food)),
-//                   child: Text('Remove'),
-//                 ),
-//               ),
-//           ],
-//         ),
-//       ),
     );
   }
 }
