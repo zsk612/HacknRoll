@@ -1,3 +1,7 @@
+import 'package:intl/intl.dart';
+
+import 'status.dart';
+
 class Food {
   String foodName;
   double foodNumber;
@@ -15,7 +19,7 @@ class Food {
   String get name {
     return foodName;
   }
-  
+
   double get number {
     return foodNumber;
   }
@@ -31,7 +35,7 @@ class Food {
   void set name(String foodName) {
     name = foodName;
   }
-  
+
   void set number(double foodNumber) {
     number = foodNumber;
   }
@@ -44,6 +48,14 @@ class Food {
     expireDate = foodExpireDate;
   }
 
+  bool isNearExpire(DateTime foodExpireDate) {
+    return true;
+  }
+
+  bool isExpired(DateTime foodExpireDate) {
+    return true;
+  }
+
   Status getStatus() {
     final diffDt = foodExpireDate.difference(currentDate);
     if (diffDt.inDays >= 3) {
@@ -54,4 +66,27 @@ class Food {
       return Status.expiring;
     }
   }
+
+  Food.fromMap(Map map){
+    this.foodName = map['name'];
+    this.foodNumber = map['number'];
+    this.foodPosition = map['position'];
+    this.foodExpireDate = DateTime.parse(map['expireDate']);
+  }
+
+  Map toMap(){
+    return{
+      'name': this.foodName,
+      'number': this.foodNumber,
+      'position': this.foodPosition,
+      'expireDate': formatDate(this.foodExpireDate),
+    };
+  }
+
+  String formatDate(DateTime unformattedDate){
+    String formattedDate = DateFormat('yyyy-MM-dd').format(unformattedDate);
+    return formattedDate;
+  }
+
+
 }

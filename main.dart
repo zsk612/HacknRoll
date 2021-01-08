@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'ListScreen.dart';
+import 'food.dart';
 
 final foods = <Food>[];
 
@@ -18,18 +22,54 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class MyHomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
+
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
+
+ static SharedPreferences sharedPreferences;
+
   final foodName = TextEditingController();
   final foodPosition = TextEditingController();
   final foodNumber = TextEditingController();
   //final foodExpireDate = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
+
+  @override
+  void initState(){
+    initSharePreferences();
+
+    super.initState();
+  }
+
+  initSharePreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    loadData();
+  }
+
+  static void saveData(){
+    List<String> spList = foods.map((food)=>json.encode(food.toMap())).toList();
+    sharedPreferences.setStringList('list', spList);
+    //print(spList);
+  }
+
+  void loadData(){
+    List<String> spList = sharedPreferences.getStringList('list');
+    var tempFoodList = <Food>[];
+    tempFoodList = spList.map((food) =>Food.fromMap(json.decode(food))).toList();
+
+    //pass stored data to final list foods
+    for(var foodData in tempFoodList ){
+      foods.add(foodData);
+    }
+
+    setState(() {});
+  }
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime selected = await showDatePicker(
@@ -141,6 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             foodNumber.clear();
                             foodPosition.clear();
                             selectedDate = DateTime.now();
+                            saveData();
                           });
                         }
                       },
@@ -156,3 +197,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+

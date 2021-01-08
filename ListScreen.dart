@@ -1,3 +1,11 @@
+
+
+import 'package:flutter/material.dart';
+
+import 'foodScreen.dart';
+import 'main.dart';
+import 'searchFood.dart';
+
 class ListScreen extends StatefulWidget {
   @override
   _ListScreenState createState() => _ListScreenState();
@@ -12,7 +20,7 @@ class _ListScreenState extends State<ListScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              showSearch(context: context, delegate: SearchFood(foods));
+              showSearch(context: context, delegate: SearchFood(foods)).then(onGoBack);
             },
             icon: Icon(Icons.search),
           ),
@@ -31,11 +39,15 @@ class _ListScreenState extends State<ListScreen> {
                 MaterialPageRoute(
                   builder: (context) => FoodScreen(food: foods[index]),
                 ),
-              );
+              ).then(onGoBack);
             },
           );
         },
       ),
     );
+  }
+
+  onGoBack(dynamic value) {
+    setState(() {});
   }
 }

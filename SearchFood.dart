@@ -1,3 +1,11 @@
+
+
+
+import 'package:flutter/material.dart';
+
+import 'food.dart';
+import 'foodScreen.dart';
+
 class SearchFood extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -22,7 +30,7 @@ class SearchFood extends SearchDelegate {
   }
 
   String selectedResult;
-  
+
   @override
   // Not used
   Widget buildResults(BuildContext context) {
@@ -36,10 +44,10 @@ class SearchFood extends SearchDelegate {
       suggestionList = [];
     } else {
       suggestionList.addAll(foods.where(
-        (element) => element.foodName.contains(query),
+            (element) => element.foodName.contains(query),
       ));
     }
-    
+
     return ListView.builder(
       itemCount: suggestionList.length,
       itemBuilder: (context, index) {
@@ -60,7 +68,7 @@ class SearchFood extends SearchDelegate {
       },
     );
   }
-  
+
   final List<Food> foods;
   SearchFood(this.foods);
 }

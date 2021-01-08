@@ -1,3 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:over_rotten/ListScreen.dart';
+
+import 'food.dart';
+import 'main.dart';
+
 class FoodScreen extends StatefulWidget {
   final Food food;
   @override
@@ -10,6 +17,7 @@ class _FoodScreenState extends State<FoodScreen> {
   Food food;
   _FoodScreenState(this.food);
   final foodNumber = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,26 +63,33 @@ class _FoodScreenState extends State<FoodScreen> {
                 setState(() {
                   food.foodNumber = double.parse(foodNumber.text);
                   foodNumber.clear();
+                  MyHomePageState.saveData();
                 });
               },
               child: Text(
                 'Save changes',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
               ),
               color: Colors.greenAccent,
             ),
             RaisedButton(
               onPressed: () {
-                print("item deleted");
+                //print("item deleted");
+                foods.remove(food);
+                MyHomePageState.saveData();
+                //Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: Text(
                 'Delete',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
               ),
               color: Colors.greenAccent,
             ),
+
+
           ],
         ),
       ),
