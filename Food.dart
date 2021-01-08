@@ -1,17 +1,23 @@
 class Food {
   String foodName;
+  double foodNumber;
   String foodPosition;
   DateTime foodExpireDate;
   final DateTime currentDate = DateTime.now();
 
-  Food(String foodName, String foodPosition, DateTime foodExpireDate) {
+  Food(String foodName, double foodNumber, String foodPosition, DateTime foodExpireDate) {
     this.foodName = foodName;
+    this.foodNumber = foodNumber;
     this.foodPosition = foodPosition;
     this.foodExpireDate = foodExpireDate;
   }
 
   String get name {
     return foodName;
+  }
+  
+  double get number {
+    return foodNumber;
   }
 
   String get position {
@@ -24,6 +30,10 @@ class Food {
 
   void set name(String foodName) {
     name = foodName;
+  }
+  
+  void set number(double foodNumber) {
+    number = foodNumber;
   }
 
   void set position(String foodPosition) {

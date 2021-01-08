@@ -25,6 +25,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final foodName = TextEditingController();
   final foodPosition = TextEditingController();
+  final foodNumber = TextEditingController();
   //final foodExpireDate = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
@@ -89,6 +90,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   TextField(
+                    controller: foodNumber,
+                    decoration: new InputDecoration(labelText: "Enter your number"),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ], // Only numbers can be entered
+                  ),
+                  TextField(
                     controller: foodPosition,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -98,34 +107,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: ElevatedButton(
-                      child: Text('List'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ListScreen()),
-                        );
-                      }
-                    ),
+                        child: Text('List'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ListScreen()),
+                          );
+                        }),
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: FloatingActionButton(
                       onPressed: () {
                         if (foodName.text.isEmpty ||
-                            foodPosition.text.isEmpty) {
+                            foodPosition.text.isEmpty ||
+                            foodNumber.text.isEmpty) {
                           showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Please enter full detail of the food 🥺'),
+                                title: Text(
+                                    'Please enter full detail of the food 🥺'),
                               );
                             },
                           );
                         } else {
                           setState(() {
-                            foods.add(
-                              Food(foodName.text, foodPosition.text, selectedDate.toLocal()));
+                            foods.add(Food(foodName.text, double.parse(foodNumber.text), foodPosition.text,
+                                selectedDate.toLocal()));
                             foodName.clear();
+                            foodNumber.clear();
                             foodPosition.clear();
                             selectedDate = DateTime.now();
                           });
