@@ -44,11 +44,14 @@ class Food {
     expireDate = foodExpireDate;
   }
 
-  bool isNearExpire(DateTime foodExpireDate) {
-    return true;
-  }
-
-  bool isExpired(DateTime foodExpireDate) {
-    return true;
+  Status getStatus() {
+    final diffDt = foodExpireDate.difference(currentDate);
+    if (diffDt.inDays >= 3) {
+      return Status.fresh;
+    } else if (diffDt.inDays < 0) {
+      return Status.expired;
+    } else {
+      return Status.expiring;
+    }
   }
 }

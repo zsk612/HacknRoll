@@ -15,9 +15,8 @@ class _ListScreenState extends State<ListScreen> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(foods[index].foodName),
-            // When a user taps the ListTile, navigate to the DetailScreen.
-            // Notice that you're not only creating a DetailScreen, you're
-            // also passing the current todo through to it.
+            trailing: Text(foods[index].getStatus().toString().split(".")[1]),
+            hoverColor:Colors.blue[50],
             onTap: () {
               Navigator.push(
                 context,

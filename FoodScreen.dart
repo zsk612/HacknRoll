@@ -35,6 +35,10 @@ class _FoodScreenState extends State<FoodScreen> {
                 leading: Text("Food Position:"),
                 trailing: Text(food.foodPosition),
             ),
+            ListTile(
+                leading: Text("Food Status:"),
+                trailing: Text(food.getStatus().toString().split(".")[1]),
+            ),
             TextField(
                     controller: foodNumber,
                     decoration: new InputDecoration(labelText: "Edit amount of Food"),
@@ -72,12 +76,9 @@ class _FoodScreenState extends State<FoodScreen> {
                     ),
                     color: Colors.greenAccent,
             ),
-            
-            
           ],
         ),
       ),
     );
   }
 }
-
