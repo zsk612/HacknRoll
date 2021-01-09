@@ -56,6 +56,7 @@ class _ListScreenState extends State<ListScreen> {
       foods.sort(
           (a, b) => a.getDaysUntilExpire().compareTo(b.getDaysUntilExpire()));
     });
+    MyHomePageState.saveData();
   }
 
   Color displayColor(Status expireState) {
