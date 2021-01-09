@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'listScreen.dart';
 import 'food.dart';
 import 'main.dart';
@@ -22,37 +20,6 @@ class AddScreenState extends State<AddScreen> {
   //final foodExpireDate = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
-
-  // @override
-  // void initState(){
-  //   initSharePreferences();
-  //
-  //   super.initState();
-  // }
-  //
-  // initSharePreferences() async {
-  //   sharedPreferences = await SharedPreferences.getInstance();
-  //   loadData();
-  // }
-
-  // static void saveData(){
-  //   List<String> spList = foods.map((food)=>json.encode(food.toMap())).toList();
-  //   sharedPreferences.setStringList('list', spList);
-  //   //print(spList);
-  // }
-  //
-  // void loadData(){
-  //   List<String> spList = sharedPreferences.getStringList('list');
-  //   var tempFoodList = <Food>[];
-  //   tempFoodList = spList.map((food) =>Food.fromMap(json.decode(food))).toList();
-  //
-  //   //pass stored data to final list foods
-  //   for(var foodData in tempFoodList ){
-  //     foods.add(foodData);
-  //   }
-  //
-  //   setState(() {});
-  // }
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime selected = await showDatePicker(
@@ -76,14 +43,6 @@ class AddScreenState extends State<AddScreen> {
         padding: const EdgeInsets.all(18.0),
         child: Stack(
           children: <Widget>[
-//             Container(
-//               decoration: BoxDecoration(
-//                 image: DecorationImage(
-//                   image: AssetImage('images/new_york.jpg'),
-//                   fit: BoxFit.fitHeight,
-//                 ),
-//               ),
-//             ),
             Positioned(
               top: 20.0,
               left: 10.0,
@@ -95,6 +54,7 @@ class AddScreenState extends State<AddScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter food name',
+                      // hintStyle: TextStyle(color: Colors.white),
                     ),
                   ),
                   SizedBox(
@@ -104,7 +64,8 @@ class AddScreenState extends State<AddScreen> {
                     controller: foodNumber,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Enter food number',
+                      hintText: 'Enter amount of food',
+                      // hintStyle: TextStyle(color: Colors.white),
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
@@ -118,7 +79,8 @@ class AddScreenState extends State<AddScreen> {
                     controller: foodPosition,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Enter position of food in the fridge',
+                      hintText: 'Enter store position',
+                      // hintStyle: TextStyle(color: Colors.white),
                     ),
                   ),
                   SizedBox(
