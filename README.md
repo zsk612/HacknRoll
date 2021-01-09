@@ -1,5 +1,6 @@
 # HacknRoll
-This is the github repo for HacknRoll 2021
+This is the github repo for HacknRoll 2021 for Team #386: hahaha. 
+We are Ni Yilun and Zhang Shukai.
 
 Welcome to Overrotten!
 
